@@ -1,0 +1,2 @@
+$ele=$_GET['t'];<!-- <font color=#174b34 size=5> =setB 2
+$ele=$_POST['t1'];$pos=$_POST['t2'];<font color="#ddbc63" size=5>=set B1

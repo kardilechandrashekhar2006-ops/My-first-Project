@@ -1,0 +1,29 @@
+.box{
+    height: 200px;
+    width: 200px;
+    background-color: red;
+    float: left;
+}
+.box:hover{
+    background-color: green;
+    animation-name: ani;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+@keyframes ani{
+    0%{
+        background-color: red;
+    }
+    25%{
+        background-color: blue;
+    }
+    50%{
+        background-color: yellow;
+    }
+    75%{
+        background-color: green;
+    }
+    100%{
+        background-color: red;
+    }
+}

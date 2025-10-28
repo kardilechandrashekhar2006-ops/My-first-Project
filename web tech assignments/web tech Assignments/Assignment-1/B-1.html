@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+        <style>
+            h2{
+                font-size: 30px;
+                color: rgb(243, 9, 21);
+            }
+            form{
+                background-color: rgb(237, 237, 3);
+                border: 2px solid rgb(0, 0, 0);
+                padding: 25px;
+                width: 400px;
+                margin: auto;
+            }
+
+            input[type="text"], input[type="password"] {
+                width: 50%;
+                padding: 7px 20px;
+                border: 1px solid #030403; 
+            }
+            form:hover{
+             background-color: rgb(236, 103, 199);
+            }
+        </style>
+</head>
+<body>
+    <fieldset>
+    <form>
+        <h2>operating system information</h2>
+        <label for="name"><b>Enter Your Name:</b></label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="password"><b>Password:</b></label>
+        <input type="password" id="password" name="password" required><br><br>
+    
+           <b>which of the following operating system do you use?</b><br>
+            <input type="checkbox" id="windows" name="os" value="Windows">  Linux
+            <input type="checkbox" id="linux" name="os" value="Linux"> Windows 10
+            <input type="checkbox" id="mac" name="os" value="Mac">  Macintosh 8.0<br><br>
+        
+           <b> which of the following operating system do you like the best?</b><br>
+            <input type="radio" id="windows" name="os" value="Windows">  Linux
+            <input type="radio" id="linux" name="os" value="Linux"> Windows 10
+            <input type="radio" id="mac" name="os" value="Mac">  Macintosh 8.0
+            <br><br><br>
+
+        You have completed the form.
+    
+       <button type="submit">Sign up</button>
+       
+        </form>
+</body>
+</html>

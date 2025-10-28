@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Box Model Property</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      gap: 30px;
+    }
+
+    .outer {
+      width: 150px;
+      height: 150px;
+      border: 3px solid black;
+      padding: 20px;
+      background-color: lightgray;
+    }
+
+    .name {
+      position: absolute;
+      top: 40%;   /* adjust vertical position */
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 220px;
+      border: 2px solid black;
+      padding: 15px;
+      background-color: white;
+      font-weight: bold;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+  <!-- <h2>CSS Box Model Property</h2> -->
+  <div class="container">
+    <div class="outer"></div>
+    <div class="outer"></div>
+    <div class="name">
+      T.Y.B.Sc (Comp. Sci)<br>
+      Academic Year 2021-22
+    </div>
+  </div>
+</body>
+</html>

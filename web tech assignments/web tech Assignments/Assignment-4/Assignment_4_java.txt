@@ -1,0 +1,457 @@
+SET_A_1
+
+
+// User-defined Exception
+class CovidPositiveException extends Exception {
+    public CovidPositiveException(String message) {
+        super(message);
+    }
+}
+
+// Patient class
+class Patient {
+    String patient_name;
+    int patient_age;
+    int patient_oxy_level;
+    int patient_HRCT_report;
+
+    public Patient(String name, int age, int oxy, int hrct) {
+        patient_name = name;
+        patient_age = age;
+        patient_oxy_level = oxy;
+        patient_HRCT_report = hrct;
+    }
+
+    public void checkStatus() throws CovidPositiveException {
+        if (patient_oxy_level < 95 && patient_HRCT_report > 10) {
+            throw new CovidPositiveException("Patient is Covid Positive(+) and Need to Hospitalized");
+        } else {
+            System.out.println("Patient Name: " + patient_name);
+            System.out.println("Age: " + patient_age);
+            System.out.println("Oxygen Level: " + patient_oxy_level + "%");
+            System.out.println("HRCT Report: " + patient_HRCT_report);
+        }
+    }
+}
+
+// Main class
+public class SET_A_1 {
+    public static void main(String[] args) {
+        // Create patient object
+        Patient p = new Patient("Amit", 40, 96, 9); // You can change values here
+
+        try {
+            p.checkStatus();
+        } catch (CovidPositiveException e) {
+            System.out.println("Exception: " + e.getMessage());
+        }
+    }
+}
+
+
+SET_A_2
+
+import java.io.*;
+import java.util.*;
+
+public class SET_A_2 {
+    public static void main(String[] args) {
+        List<String> lines = new ArrayList<>();
+
+        try {
+               BufferedReader reader = new BufferedReader(new FileReader("sample.txt"));
+            String line;
+            System.out.println("Original Content in UPPERCASE:\n");
+
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line.toUpperCase()); 
+                lines.add(line);
+            }
+            reader.close();
+              System.out.println("\nContent in REVERSE ORDER:\n");
+            for (int i = lines.size() - 1; i >= 0; i--) {
+                System.out.println(lines.get(i));
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+    }
+}
+
+SET_A_3
+
+// package Labbook.Assignment4;
+import java.io.*;
+import java.util.Scanner;
+
+public class SET_A_3 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Accept file names
+        System.out.print("Enter source file name: ");
+        String sourceFile = sc.nextLine();
+
+        System.out.print("Enter destination file name: ");
+        String destFile = sc.nextLine();
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(sourceFile));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(destFile));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                writer.write(line);
+                writer.newLine();
+            }
+
+            // Add end of file comment
+            writer.write("end of file");
+            writer.newLine();
+
+            reader.close();
+            writer.close();
+
+            System.out.println("File copied successfully with 'end of file' added.");
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+}
+
+
+SET_B_1
+
+
+import java.io.*;
+import java.util.Scanner;
+class BookManager {
+    static final String FILE_NAME = "book.dat";
+    static final int NAME_LENGTH = 30; 
+    public static void main(String[] args) throws IOException {
+        Scanner sc = new Scanner(System.in);
+        RandomAccessFile file = new RandomAccessFile(FILE_NAME, "rw");
+
+        while (true) {
+            System.out.println("\n--- Book Menu ---");
+            System.out.println("1. Add Book");
+            System.out.println("2. Search Book by Name");
+            System.out.println("3. Display All Books and Total Cost");
+            System.out.println("4. Exit");
+            System.out.print("Enter choice: ");
+            int choice = sc.nextInt();
+            sc.nextLine(); 
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Book ID: ");
+                    int id = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Enter Book Name: ");
+                    String name = sc.nextLine();
+                    System.out.print("Enter Book Price: ");
+                    double price = sc.nextDouble();
+                    System.out.print("Enter Book Quantity: ");
+                    int qty = sc.nextInt();
+
+                    file.seek(file.length());
+                    file.writeInt(id);
+                    writeFixedString(file, name, NAME_LENGTH);
+                    file.writeDouble(price);
+                    file.writeInt(qty);
+                    System.out.println("Book added.");
+                    break;
+
+                case 2:
+                    System.out.print("Enter Book Name to Search: ");
+                    String searchName = sc.nextLine();
+                    file.seek(0);
+                    boolean found = false;
+
+                    while (file.getFilePointer() < file.length()) {
+                        int bid = file.readInt();
+                        String bname = readFixedString(file, NAME_LENGTH).trim();
+                        double bprice = file.readDouble();
+                        int bqty = file.readInt();
+
+                        if (bname.equalsIgnoreCase(searchName)) {
+                            System.out.println("Book Found:");
+                            System.out.println("ID: " + bid + ", Name: " + bname + ", Price: " + bprice + ", Qty: " + bqty);
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) System.out.println("Book not found.");
+                    break;
+
+                case 3:
+                    file.seek(0);
+                    double total = 0;
+                    System.out.println("\nAll Books:");
+                    while (file.getFilePointer() < file.length()) {
+                        int bid = file.readInt();
+                        String bname = readFixedString(file, NAME_LENGTH).trim();
+                        double bprice = file.readDouble();
+                        int bqty = file.readInt();
+
+                        System.out.println("ID: " + bid + ", Name: " + bname + ", Price: " + bprice + ", Qty: " + bqty);
+                        total += bprice * bqty;
+                    }
+                    System.out.println("Total Cost of All Books: ₹" + total);
+                    break;
+
+                case 4:
+                    file.close();
+                    System.out.println("Exiting...");
+                    return;
+
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        }
+    }
+    static void writeFixedString(RandomAccessFile file, String s, int length) throws IOException {
+        StringBuilder sb = new StringBuilder(s);
+        while (sb.length() < length) sb.append(' ');
+        file.writeChars(sb.toString());
+    }
+    static String readFixedString(RandomAccessFile file, int length) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            sb.append(file.readChar());
+        }
+        return sb.toString();
+    }
+}
+
+SET_B_2
+
+
+// Custom exception for invalid username
+class InvalidUsernameException extends Exception {
+    public InvalidUsernameException(String message) {
+        super(message);
+    }
+}
+
+// Custom exception for invalid password
+class InvalidPasswordException extends Exception {
+    public InvalidPasswordException(String message) {
+        super(message);
+    }
+}
+
+// EmailId class
+class EmailId {
+    String username;
+    String password;
+
+    // Default constructor
+    public EmailId() {
+        username = "";
+        password = "";
+    }
+
+    // Parameterized constructor
+    public EmailId(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    // Validation method
+    public void validate() throws InvalidUsernameException, InvalidPasswordException {
+        if (username == null || !username.contains("@")) {
+            throw new InvalidUsernameException("Invalid Username: must contain '@'");
+        }
+        if (password == null || password.length() < 6) {
+            throw new InvalidPasswordException("Invalid Password: must be at least 6 characters");
+        }
+        System.out.println("Username: " + username);
+        System.out.println("Password: " + password);
+    }
+}
+
+// Main class
+public class SET_B_2{
+    public static void main(String[] args) {
+        if (args.length < 2) {
+            System.out.println("Usage: java Main <username> <password>");
+            return;
+        }
+
+        String user = args[0];
+        String pass = args[1];
+
+        EmailId email = new EmailId(user, pass);
+
+        try {
+            email.validate();
+        } catch (InvalidUsernameException | InvalidPasswordException e) {
+            System.out.println("Exception: " + e.getMessage());
+        }
+    }
+}
+
+SET_B_3
+
+
+import java.util.Scanner;
+
+// Custom Exception
+class InvalidDateException extends Exception {
+    public InvalidDateException(String message) {
+        super(message);
+    }
+}
+
+// MyDate class
+class MyDate {
+    int day, month, year;
+
+    // Accept method
+    public void acceptDate(int d, int m, int y) throws InvalidDateException {
+        if (!isValidDate(d, m, y)) {
+            throw new InvalidDateException("Invalid date: " + d + "/" + m + "/" + y);
+        }
+        this.day = d;
+        this.month = m;
+        this.year = y;
+    }
+
+    // Display method
+    public void displayDate() {
+        System.out.println("Date: " + day + "/" + month + "/" + year);
+    }
+
+    // Validation logic
+    private boolean isValidDate(int d, int m, int y) {
+        if (m < 1 || m > 12 || d < 1) return false;
+
+        int[] daysInMonth = {
+            31, (isLeapYear(y) ? 29 : 28), 31, 30, 31, 30,
+            31, 31, 30, 31, 30, 31
+        };
+
+        return d <= daysInMonth[m - 1];
+    }
+
+    private boolean isLeapYear(int y) {
+        return (y % 4 == 0 && y % 100 != 0) || (y % 400 == 0);
+    }
+}
+
+// Main class
+public class SET_B_3 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        MyDate date = new MyDate();
+
+        System.out.print("Enter day, month, year (dd mm yyyy): ");
+        int d = sc.nextInt();
+        int m = sc.nextInt();
+        int y = sc.nextInt();
+
+        try {
+            date.acceptDate(d, m, y);
+            date.displayDate();
+        } catch (InvalidDateException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}
+
+
+SET_C_1
+
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.*;
+public class SET_C_1 {
+    static List<Integer> numbers = new ArrayList<>();
+    static Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) {
+        int choice;
+        do {
+            System.out.println("\n--- MENU ---");
+            System.out.println("1. Load Numbers");
+            System.out.println("2. Save to File");
+            System.out.println("3. Display Numbers");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1 -> loadNumbers();
+                case 2 -> saveToFile();
+                case 3 -> displayNumbers();
+                case 4 -> System.out.println("Exiting program...");
+                default -> System.out.println("Invalid choice. Try again.");
+            }
+        } while (choice != 4);
+    }
+    static void loadNumbers() {
+        numbers.clear();
+        Random rand = new Random();
+        for (int i = 0; i < 10; i++) {
+            int num = rand.nextInt(90) + 10; // Two-digit number (10 to 99)
+            numbers.add(num);
+        }
+        System.out.println("Numbers loaded successfully.");
+        displayNumbers();
+    }
+    static void saveToFile() {
+        try (FileWriter writer = new FileWriter("number.txt")) {
+            for (int num : numbers) {
+                writer.write(num + "\n");
+            }
+            System.out.println("Numbers saved to number.txt");
+        } catch (IOException e) {
+            System.out.println("Error saving to file: " + e.getMessage());
+        }
+    }
+    static void displayNumbers() {
+        if (numbers.isEmpty()) {
+            System.out.println("No numbers to display. Please load first.");
+        } else {
+            System.out.println("Numbers:");
+            for (int num : numbers) {
+                System.out.print(num + " ");
+            }
+            System.out.println();
+        }
+    }
+}
+
+
+SET_C_2
+
+
+import java.util.Scanner;
+class NameInvalidException extends Exception {
+    public NameInvalidException(String message) {
+        super(message);
+    }
+}
+public class SET_C_2 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter Employee Name: ");
+        String name = sc.nextLine();
+
+        try {
+            validateName(name);
+            System.out.println("Valid Name: " + name);
+        } catch (NameInvalidException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    static void validateName(String name) throws NameInvalidException {
+        if (!name.matches("[a-zA-Z\\s\\-]+")) {
+            throw new NameInvalidException("Name is Invalid");
+        }
+    }
+}
+
+

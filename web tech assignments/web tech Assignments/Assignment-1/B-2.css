@@ -1,0 +1,15 @@
+.f1{
+    font-family: Arial;
+    font-size: 20px;
+    color: rgb(220, 8, 8);
+}
+.f2{
+    font-family: cursive;
+    font-size:20px;
+    color: rgb(6, 255, 6);
+}
+.f3{
+    font-family: monospace;
+    font-size:15px;
+    color: rgb(10, 10, 237);
+}

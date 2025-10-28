@@ -1,0 +1,17 @@
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #fef601;
+    font-family: sans-serif;
+    
+}
+th{
+    font-size: medium;
+    font-style: unsET;
+}
+td{
+    font-style:unset;
+    font-size:larger;
+}

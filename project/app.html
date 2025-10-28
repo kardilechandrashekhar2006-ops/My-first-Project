@@ -1,0 +1,462 @@
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   Language Notes &amp; Code Editor App
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&amp;family=Inter&amp;display=swap" rel="stylesheet"/>
+  <style>
+   body {
+      font-family: 'Inter', sans-serif;
+    }
+    .code-editor {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      white-space: pre-wrap;
+      outline: none;
+      resize: none;
+    }
+  </style>
+ </head>
+ <body class="bg-gray-50 min-h-screen flex flex-col">
+  <header class="bg-indigo-600 text-white p-4 flex items-center justify-between">
+   <div class="flex items-center space-x-3">
+    <img alt="App logo with letters LN in white on indigo background" class="rounded" height="40" src="https://storage.googleapis.com/a1aa/image/90d2485e-3d3b-48b5-0c16-ea661f581fb3.jpg" width="40"/>
+    <h1 class="text-xl font-semibold">
+     Language Notes &amp; Code Editor
+    </h1>
+   </div>
+   <nav class="hidden md:flex space-x-6 text-indigo-200">
+    <a class="hover:text-white transition" href="#notes">
+     Notes
+    </a>
+    <a class="hover:text-white transition" href="#editor">
+     Code Editor
+    </a>
+    <a class="hover:text-white transition" href="#about">
+     About
+    </a>
+   </nav>
+   <button aria-label="Toggle menu" class="md:hidden text-white focus:outline-none" id="menu-btn">
+    <i class="fas fa-bars fa-lg">
+    </i>
+   </button>
+  </header>
+  <nav class="md:hidden bg-indigo-600 text-white flex flex-col space-y-2 p-4 hidden" id="mobile-menu">
+   <a class="hover:text-indigo-300 transition" href="#notes">
+    Notes
+   </a>
+   <a class="hover:text-indigo-300 transition" href="#editor">
+    Code Editor
+   </a>
+   <a class="hover:text-indigo-300 transition" href="#about">
+    About
+   </a>
+  </nav>
+  <main class="flex-grow container mx-auto px-4 py-6 max-w-7xl">
+   <section class="mb-12" id="notes">
+    <h2 class="text-2xl font-bold mb-4 text-indigo-700">
+     Language Notes
+    </h2>
+    <div class="flex flex-col md:flex-row md:space-x-6">
+     <aside class="md:w-1/4 mb-4 md:mb-0">
+      <ul class="space-y-2 border border-gray-300 rounded-md p-3 max-h-[480px] overflow-y-auto bg-white" id="notes-list">
+       <li class="cursor-pointer p-2 rounded hover:bg-indigo-100 focus:bg-indigo-200 focus:outline-none" data-id="1" tabindex="0">
+        Spanish Basics
+       </li>
+       <li class="cursor-pointer p-2 rounded hover:bg-indigo-100 focus:bg-indigo-200 focus:outline-none" data-id="2" tabindex="0">
+        French Grammar
+       </li>
+       <li class="cursor-pointer p-2 rounded hover:bg-indigo-100 focus:bg-indigo-200 focus:outline-none" data-id="3" tabindex="0">
+        Japanese Kanji
+       </li>
+       <li class="cursor-pointer p-2 rounded hover:bg-indigo-100 focus:bg-indigo-200 focus:outline-none" data-id="4" tabindex="0">
+        German Vocabulary
+       </li>
+       <li class="cursor-pointer p-2 rounded hover:bg-indigo-100 focus:bg-indigo-200 focus:outline-none" data-id="5" tabindex="0">
+        Python Syntax
+       </li>
+       <li class="cursor-pointer p-2 rounded hover:bg-indigo-100 focus:bg-indigo-200 focus:outline-none" data-id="6" tabindex="0">
+        JavaScript ES6
+       </li>
+       <li class="cursor-pointer p-2 rounded hover:bg-indigo-100 focus:bg-indigo-200 focus:outline-none" data-id="7" tabindex="0">
+        C++ Pointers
+       </li>
+       <li class="cursor-pointer p-2 rounded hover:bg-indigo-100 focus:bg-indigo-200 focus:outline-none" data-id="8" tabindex="0">
+        Ruby Blocks
+       </li>
+       <li class="cursor-pointer p-2 rounded hover:bg-indigo-100 focus:bg-indigo-200 focus:outline-none" data-id="9" tabindex="0">
+        SQL Joins
+       </li>
+       <li class="cursor-pointer p-2 rounded hover:bg-indigo-100 focus:bg-indigo-200 focus:outline-none" data-id="10" tabindex="0">
+        HTML5 Tags
+       </li>
+      </ul>
+      <button class="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded shadow transition" id="add-note-btn">
+       <i class="fas fa-plus mr-2">
+       </i>
+       Add New Note
+      </button>
+     </aside>
+     <article class="md:w-3/4 bg-white border border-gray-300 rounded-md p-6 min-h-[480px] flex flex-col" id="note-content">
+      <input class="mb-4 text-2xl font-semibold border-b border-gray-300 focus:outline-none focus:border-indigo-500" disabled="" id="note-title" placeholder="Select or create a note..." type="text"/>
+      <textarea class="flex-grow resize-none border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" disabled="" id="note-text" placeholder="Note content will appear here..." rows="20"></textarea>
+      <div class="mt-4 flex justify-end space-x-3">
+       <button class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded disabled:opacity-50 disabled:cursor-not-allowed transition" disabled="" id="save-note-btn">
+        <i class="fas fa-save mr-2">
+        </i>
+        Save
+       </button>
+       <button class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded disabled:opacity-50 disabled:cursor-not-allowed transition" disabled="" id="delete-note-btn">
+        <i class="fas fa-trash-alt mr-2">
+        </i>
+        Delete
+       </button>
+      </div>
+     </article>
+    </div>
+   </section>
+   <section class="mb-12" id="editor">
+    <h2 class="text-2xl font-bold mb-4 text-indigo-700">
+     Code Editor
+    </h2>
+    <div class="flex flex-col md:flex-row md:space-x-6">
+     <aside class="md:w-1/4 mb-4 md:mb-0">
+      <label class="block mb-2 font-semibold text-gray-700" for="language-select">
+       Select Language
+      </label>
+      <select class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" id="language-select">
+       <option value="javascript">
+        JavaScript
+       </option>
+       <option value="python">
+        Python
+       </option>
+       <option value="html">
+        HTML
+       </option>
+       <option value="css">
+        CSS
+       </option>
+       <option value="java">
+        Java
+       </option>
+       <option value="c++">
+        C++
+       </option>
+       <option value="ruby">
+        Ruby
+       </option>
+       <option value="sql">
+        SQL
+       </option>
+      </select>
+      <label class="block mt-6 mb-2 font-semibold text-gray-700" for="theme-select">
+       Select Theme
+      </label>
+      <select class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" id="theme-select">
+       <option value="light">
+        Light
+       </option>
+       <option value="dark">
+        Dark
+       </option>
+      </select>
+      <button class="mt-6 w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded shadow transition" id="run-code-btn">
+       <i class="fas fa-play mr-2">
+       </i>
+       Run Code
+      </button>
+     </aside>
+     <div class="md:w-3/4 flex flex-col">
+      <label class="block mb-2 font-semibold text-gray-700" for="code-editor">
+       Code Editor
+      </label>
+      <textarea class="code-editor border border-gray-300 rounded p-4 min-h-[320px] focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900" id="code-editor" placeholder="// Write your code here..." spellcheck="false"></textarea>
+      <label class="block mt-6 mb-2 font-semibold text-gray-700" for="output-console">
+       Output Console
+      </label>
+      <textarea class="border border-gray-300 rounded p-4 min-h-[120px] bg-gray-100 text-gray-800 font-mono resize-none" id="output-console" placeholder="Output will appear here..." readonly=""></textarea>
+     </div>
+    </div>
+   </section>
+   <section class="bg-white border border-gray-300 rounded-md p-6 max-w-4xl mx-auto" id="about">
+    <h2 class="text-2xl font-bold mb-4 text-indigo-700">
+     About This App
+    </h2>
+    <p class="mb-4 text-gray-700 leading-relaxed">
+     This app is designed to help you keep notes for language learning and
+        practice coding in multiple programming languages. You can create,
+        edit, and delete notes related to languages or programming concepts.
+        The built-in code editor supports multiple languages and themes, and
+        allows you to run JavaScript code directly in the browser.
+    </p>
+    <img alt="Illustration showing a person taking language notes on one side and coding on a laptop on the other side, bright and modern style" class="w-full rounded" height="200" src="https://storage.googleapis.com/a1aa/image/27b6ad0a-0214-4704-3c33-5c31bc1a2e84.jpg" width="600"/>
+   </section>
+  </main>
+  <footer class="bg-indigo-600 text-indigo-200 p-4 text-center text-sm">
+   © 2024 Language Notes &amp; Code Editor App. All rights reserved.
+  </footer>
+  <script>
+   // Mobile menu toggle
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Notes data store (simulate local storage)
+    let notes = [
+      {
+        id: 1,
+        title: 'Spanish Basics',
+        content:
+          'Hola = Hello\nAdiós = Goodbye\nPor favor = Please\nGracias = Thank you\n¿Cómo estás? = How are you?',
+      },
+      {
+        id: 2,
+        title: 'French Grammar',
+        content:
+          'Nouns have gender: masculine or feminine.\nExample: le livre (the book - masculine), la table (the table - feminine).\nVerbs conjugate based on subject pronouns.',
+      },
+      {
+        id: 3,
+        title: 'Japanese Kanji',
+        content:
+          '日 (nichi) = Sun, day\n月 (getsu) = Moon, month\n水 (sui) = Water\n火 (ka) = Fire\n木 (moku) = Tree',
+      },
+      {
+        id: 4,
+        title: 'German Vocabulary',
+        content:
+          'Haus = House\nBaum = Tree\nAuto = Car\nBuch = Book\nFreund = Friend',
+      },
+      {
+        id: 5,
+        title: 'Python Syntax',
+        content:
+          'def function_name(params):\n # code block\n return value\n\nIndentation is important in Python.',
+      },
+      {
+        id: 6,
+        title: 'JavaScript ES6',
+        content:
+          'let and const for variable declarations.\nArrow functions: const add = (a, b) => a + b;\nTemplate literals: `Hello ${name}`',
+      },
+      {
+        id: 7,
+        title: 'C++ Pointers',
+        content:
+          'int* ptr = &variable;\nDereference pointer: *ptr\nPointers store memory addresses.',
+      },
+      {
+        id: 8,
+        title: 'Ruby Blocks',
+        content:
+          'Blocks are chunks of code passed to methods.\nExample: [1,2,3].each { |n| puts n }\nBlocks can be do...end or {}.',
+      },
+      {
+        id: 9,
+        title: 'SQL Joins',
+        content:
+          'INNER JOIN: returns matching rows from both tables.\nLEFT JOIN: returns all rows from left table and matched rows from right.\nRIGHT JOIN: opposite of LEFT JOIN.',
+      },
+      {
+        id: 10,
+        title: 'HTML5 Tags',
+        content:
+          '<header>, <footer>, <article>, <section>, <nav>, <main>, <aside>, <figure>, <figcaption>',
+      },
+    ];
+
+    // Elements
+    const notesList = document.getElementById('notes-list');
+    const noteTitleInput = document.getElementById('note-title');
+    const noteTextArea = document.getElementById('note-text');
+    const saveNoteBtn = document.getElementById('save-note-btn');
+    const deleteNoteBtn = document.getElementById('delete-note-btn');
+    const addNoteBtn = document.getElementById('add-note-btn');
+
+    let selectedNoteId = null;
+    let isNewNote = false;
+
+    // Render notes list
+    function renderNotesList() {
+      notesList.innerHTML = '';
+      notes.forEach((note) => {
+        const li = document.createElement('li');
+        li.setAttribute('tabindex', '0');
+        li.className =
+          'cursor-pointer p-2 rounded hover:bg-indigo-100 focus:bg-indigo-200 focus:outline-none';
+        li.dataset.id = note.id;
+        li.textContent = note.title;
+        if (note.id === selectedNoteId) {
+          li.classList.add('bg-indigo-200', 'font-semibold');
+        }
+        notesList.appendChild(li);
+      });
+    }
+
+    // Select note
+    function selectNote(id) {
+      selectedNoteId = id;
+      isNewNote = false;
+      const note = notes.find((n) => n.id === id);
+      if (note) {
+        noteTitleInput.value = note.title;
+        noteTextArea.value = note.content;
+        noteTitleInput.disabled = false;
+        noteTextArea.disabled = false;
+        saveNoteBtn.disabled = false;
+        deleteNoteBtn.disabled = false;
+      }
+      renderNotesList();
+    }
+
+    // Clear note editor
+    function clearNoteEditor() {
+      selectedNoteId = null;
+      isNewNote = false;
+      noteTitleInput.value = '';
+      noteTextArea.value = '';
+      noteTitleInput.disabled = true;
+      noteTextArea.disabled = true;
+      saveNoteBtn.disabled = true;
+      deleteNoteBtn.disabled = true;
+      renderNotesList();
+    }
+
+    // Add new note
+    addNoteBtn.addEventListener('click', () => {
+      selectedNoteId = null;
+      isNewNote = true;
+      noteTitleInput.value = '';
+      noteTextArea.value = '';
+      noteTitleInput.disabled = false;
+      noteTextArea.disabled = false;
+      saveNoteBtn.disabled = false;
+      deleteNoteBtn.disabled = true;
+      renderNotesList();
+      noteTitleInput.focus();
+    });
+
+    // Save note
+    saveNoteBtn.addEventListener('click', () => {
+      const title = noteTitleInput.value.trim();
+      const content = noteTextArea.value;
+      if (!title) {
+        alert('Please enter a title for the note.');
+        noteTitleInput.focus();
+        return;
+      }
+      if (isNewNote) {
+        // Create new note with unique id
+        const newId =
+          notes.length > 0 ? Math.max(...notes.map((n) => n.id)) + 1 : 1;
+        notes.push({ id: newId, title, content });
+        selectedNoteId = newId;
+        isNewNote = false;
+      } else {
+        // Update existing note
+        const note = notes.find((n) => n.id === selectedNoteId);
+        if (note) {
+          note.title = title;
+          note.content = content;
+        }
+      }
+      renderNotesList();
+      alert('Note saved successfully.');
+    });
+
+    // Delete note
+    deleteNoteBtn.addEventListener('click', () => {
+      if (
+        selectedNoteId !== null &&
+        confirm('Are you sure you want to delete this note?')
+      ) {
+        notes = notes.filter((n) => n.id !== selectedNoteId);
+        clearNoteEditor();
+      }
+    });
+
+    // Click on note list item
+    notesList.addEventListener('click', (e) => {
+      if (e.target.tagName === 'LI') {
+        const id = parseInt(e.target.dataset.id, 10);
+        selectNote(id);
+      }
+    });
+
+    // Keyboard accessibility for notes list
+    notesList.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'LI' && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault();
+        const id = parseInt(e.target.dataset.id, 10);
+        selectNote(id);
+      }
+    });
+
+    // Initialize notes list
+    renderNotesList();
+
+    // Code editor functionality
+    const languageSelect = document.getElementById('language-select');
+    const themeSelect = document.getElementById('theme-select');
+    const codeEditor = document.getElementById('code-editor');
+    const outputConsole = document.getElementById('output-console');
+    const runCodeBtn = document.getElementById('run-code-btn');
+
+    // Change theme
+    themeSelect.addEventListener('change', () => {
+      if (themeSelect.value === 'dark') {
+        codeEditor.classList.remove('bg-white', 'text-gray-900');
+        codeEditor.classList.add('bg-gray-900', 'text-green-400');
+        outputConsole.classList.remove('bg-gray-100', 'text-gray-800');
+        outputConsole.classList.add('bg-gray-800', 'text-green-300');
+      } else {
+        codeEditor.classList.remove('bg-gray-900', 'text-green-400');
+        codeEditor.classList.add('bg-white', 'text-gray-900');
+        outputConsole.classList.remove('bg-gray-800', 'text-green-300');
+        outputConsole.classList.add('bg-gray-100', 'text-gray-800');
+      }
+    });
+
+    // Run code (only JavaScript supported)
+    runCodeBtn.addEventListener('click', () => {
+      const language = languageSelect.value;
+      const code = codeEditor.value;
+      outputConsole.value = '';
+      if (language !== 'javascript') {
+        outputConsole.value =
+          'Running code is only supported for JavaScript in this app.';
+        return;
+      }
+      try {
+        // Redirect console.log to outputConsole
+        const logs = [];
+        const originalConsoleLog = console.log;
+        console.log = function (...args) {
+          logs.push(args.join(' '));
+          originalConsoleLog.apply(console, args);
+        };
+        // eslint-disable-next-line no-eval
+        const result = eval(code);
+        if (result !== undefined) {
+          logs.push(String(result));
+        }
+        console.log = originalConsoleLog;
+        outputConsole.value = logs.join('\n');
+      } catch (err) {
+        outputConsole.value = 'Error: ' + err.message;
+      }
+    });
+  </script>
+ </body>
+</html>
+
+	
